@@ -1,30 +1,46 @@
 // App.jsx
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import Phonebook from './Phonebook';
+import ContactForm from './ContactForm';
+import ContactList from './ContactList';
+import Filter from './Filter';
 
 function App() {
   const [contacts, setContacts] = useState([]);
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [filter, setFilter] = useState('');
 
-  const addContact = () => {
-    const newContact = { id: nanoid(), name, number };
+  const addContact = newContact => {
+    const isDuplicate = contacts.some(
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+    if (isDuplicate) {
+      alert('Contact with this name already exists!');
+      return;
+    }
     setContacts([...contacts, newContact]);
-    setName('');
-    setNumber('');
   };
+
+  const handleFilterChange = event => {
+    setFilter(event.target.value);
+  };
+
+  const deleteContact = id => {
+    setContacts(contacts.filter(contact => contact.id !== id));
+  };
+
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <Phonebook
-        contacts={contacts}
-        name={name}
-        number={number}
-        setName={setName}
-        setNumber={setNumber}
-        addContact={addContact}
+      <ContactForm addContact={addContact} />
+
+      <h2>Contacts</h2>
+      <Filter value={filter} onChange={handleFilterChange} />
+      <ContactList
+        contacts={filteredContacts}
+        onDeleteContact={deleteContact}
       />
     </div>
   );
