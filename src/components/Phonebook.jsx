@@ -1,6 +1,5 @@
 // Phonebook.jsx
 import React from 'react';
-import { nanoid } from 'nanoid';
 
 function Phonebook({ contacts, name, number, setName, setNumber, addContact }) {
   const handleChange = event => {

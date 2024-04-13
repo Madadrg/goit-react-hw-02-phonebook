@@ -1,6 +1,5 @@
 // ContactList.jsx
 import React from 'react';
-import styles from './Phonebook.module.css';
 
 function ContactList({ contacts, onDeleteContact }) {
   return (
