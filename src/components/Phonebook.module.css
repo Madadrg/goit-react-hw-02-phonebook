@@ -1,0 +1,27 @@
+/* Phonebook.module.css */
+
+.contactList {
+  list-style: none;
+  padding: 0;
+}
+
+.contactListItem {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.contactName {
+  font-weight: bold;
+}
+
+.contactNumber {
+  color: #555;
+}
+
+/* Display name and number in columns */
+.contactListItem {
+  display: flex;
+  flex-direction: column;
+}

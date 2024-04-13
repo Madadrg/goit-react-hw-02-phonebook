@@ -1,6 +1,7 @@
 // Phonebook.jsx
 import React from 'react';
 import { nanoid } from 'nanoid';
+import styles from './Phonebook.module.css';
 
 function Phonebook({ contacts, name, number, setName, setNumber, addContact }) {
   const handleChange = event => {
@@ -44,7 +45,7 @@ function Phonebook({ contacts, name, number, setName, setNumber, addContact }) {
       </form>
       <ul>
         {contacts.map(contact => (
-          <li key={contact.id}>
+          <li key={contact.id} className={styles.contactListItem}>
             {contact.name} - {contact.number}
           </li>
         ))}
