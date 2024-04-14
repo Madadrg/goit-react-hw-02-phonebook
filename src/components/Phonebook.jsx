@@ -1,5 +1,6 @@
 // Phonebook.jsx
 import React from 'react';
+import styles from './Phonebook.module.css';
 
 function Phonebook({ contacts, name, number, setName, setNumber, addContact }) {
   const handleChange = event => {
@@ -18,7 +19,7 @@ function Phonebook({ contacts, name, number, setName, setNumber, addContact }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
           name="name"
@@ -41,7 +42,7 @@ function Phonebook({ contacts, name, number, setName, setNumber, addContact }) {
         />
         <button type="submit">Add Contact</button>
       </form>
-      <ul>
+      <ul className={styles.contacts}>
         {contacts.map(contact => (
           <li key={contact.id}>
             {contact.name} - {contact.number}
