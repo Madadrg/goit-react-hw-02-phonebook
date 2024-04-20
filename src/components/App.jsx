@@ -1,5 +1,4 @@
-// App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
@@ -7,6 +6,19 @@ import Filter from './Filter';
 function App() {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
+
+  // Load contacts from localStorage when component mounts
+  useEffect(() => {
+    const storedContacts = localStorage.getItem('contacts');
+    if (storedContacts) {
+      setContacts(JSON.parse(storedContacts));
+    }
+  }, []);
+
+  // Save contacts to localStorage whenever contacts state changes
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const addContact = newContact => {
     const isDuplicate = contacts.some(
