@@ -7,7 +7,6 @@ function App() {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
-  // Load contacts from localStorage when component mounts
   useEffect(() => {
     const storedContacts = localStorage.getItem('contacts');
     if (storedContacts) {
@@ -15,7 +14,6 @@ function App() {
     }
   }, []);
 
-  // Save contacts to localStorage whenever contacts state changes
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
@@ -28,7 +26,7 @@ function App() {
       alert('Contact with this name already exists!');
       return;
     }
-    setContacts([...contacts, newContact]);
+    setContacts(prevContacts => [...prevContacts, newContact]);
   };
 
   const handleFilterChange = event => {
@@ -36,7 +34,9 @@ function App() {
   };
 
   const deleteContact = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== id)
+    );
   };
 
   const filteredContacts = contacts.filter(contact =>

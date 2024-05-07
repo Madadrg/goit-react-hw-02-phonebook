@@ -1,8 +1,7 @@
-// ContactForm.jsx
 import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 
-function ContactForm({ addContact }) {
+const ContactForm = ({ addContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -33,6 +32,6 @@ function ContactForm({ addContact }) {
       <button type="submit">Add Contact</button>
     </form>
   );
-}
+};
 
 export default ContactForm;
