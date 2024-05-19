@@ -1,4 +1,4 @@
-// store.js
+// src/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import {
@@ -12,16 +12,16 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import contactsReducer from './ContactsSlice';
+import phonebookReducer from './PhonebookSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['contacts'], // only contacts will be persisted
+  whitelist: ['phonebook'], // only phonebook will be persisted
 };
 
 const rootReducer = combineReducers({
-  contacts: contactsReducer,
+  phonebook: phonebookReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

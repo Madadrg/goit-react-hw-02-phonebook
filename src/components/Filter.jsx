@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateFilter } from './ContactsSlice';
+import { updateFilter } from './PhonebookSlice';
 
 function Filter() {
-  const filter = useSelector(state => state.contacts.filter);
+  const filter = useSelector(state => state.phonebook.filter);
   const dispatch = useDispatch();
 
   const handleFilterChange = event => {

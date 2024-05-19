@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from './ContactsSlice';
+import { deleteContact } from './PhonebookSlice';
 
 function ContactList() {
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filter);
+  const contacts = useSelector(state => state.phonebook.contacts);
+  const filter = useSelector(state => state.phonebook.filter);
   const dispatch = useDispatch();
 
   const filteredContacts = contacts.filter(contact =>
