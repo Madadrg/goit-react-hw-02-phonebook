@@ -73,4 +73,5 @@ const phonebookSlice = createSlice({
   },
 });
 
+export const { updateFilter } = phonebookSlice.actions;
 export default phonebookSlice.reducer;
