@@ -17,7 +17,7 @@ import phonebookReducer from './PhonebookSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['phonebook'], // only phonebook will be persisted
+  whitelist: ['phonebook'],
 };
 
 const rootReducer = combineReducers({

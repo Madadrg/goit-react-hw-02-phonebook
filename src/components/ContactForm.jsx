@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from './PhonebookSlice';
 
 function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.phonebook.contacts.isLoading);
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addContact({ id: Date.now(), name, number }));
+    dispatch(addContact({ name, number }));
     setName('');
     setNumber('');
   };
@@ -23,7 +24,10 @@ function ContactForm() {
         Number:{' '}
         <input value={number} onChange={e => setNumber(e.target.value)} />
       </div>
-      <button type="submit">Add Contact</button>
+      <button type="submit" disabled={isLoading}>
+        Add Contact
+      </button>
+      {isLoading && <p>Loading...</p>}
     </form>
   );
 }
