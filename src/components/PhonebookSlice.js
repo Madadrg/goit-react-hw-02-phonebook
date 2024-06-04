@@ -3,7 +3,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchContacts = createAsyncThunk(
   'phonebook/fetchContacts',
   async (_, thunkAPI) => {
-    const response = await fetch('/api/contacts');
+    const response = await fetch(
+      'https://6659b138de346625136d8a9f.mockapi.io/contacts/'
+    );
     return response.json();
   }
 );
@@ -11,13 +13,16 @@ export const fetchContacts = createAsyncThunk(
 export const addContact = createAsyncThunk(
   'phonebook/addContact',
   async (contact, thunkAPI) => {
-    const response = await fetch('/api/contacts', {
-      method: 'POST',
-      body: JSON.stringify(contact),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      'https://6659b138de346625136d8a9f.mockapi.io/contacts/',
+      {
+        method: 'POST',
+        body: JSON.stringify(contact),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     return response.json();
   }
 );
@@ -25,9 +30,12 @@ export const addContact = createAsyncThunk(
 export const deleteContact = createAsyncThunk(
   'phonebook/deleteContact',
   async (contactId, thunkAPI) => {
-    await fetch(`/api/contacts/${contactId}`, {
-      method: 'DELETE',
-    });
+    await fetch(
+      `https://6659b138de346625136d8a9f.mockapi.io/contacts/${contactId}`,
+      {
+        method: 'DELETE',
+      }
+    );
     return contactId;
   }
 );
