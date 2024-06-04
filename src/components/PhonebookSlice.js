@@ -1,77 +1,102 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
-const BASE_URL = 'https://6659b138de346625136d8a9f.mockapi.io/contacts/v1';
-
-// Async thunks
-export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
-  const response = await axios.get(`${BASE_URL}`);
-  return response.data;
-});
-
-export const addContact = createAsyncThunk(
-  'contacts/addContact',
-  async contact => {
-    const response = await axios.post(`${BASE_URL}`, contact);
-    return response.data;
+// Async thunk for fetching contacts
+export const fetchContacts = createAsyncThunk(
+  'phonebook/fetchContacts',
+  async (_, thunkAPI) => {
+    // Fetch contacts from an API or other source
+    const response = await fetch('/api/contacts');
+    return response.json();
   }
 );
 
+// Async thunk for adding a contact
+export const addContact = createAsyncThunk(
+  'phonebook/addContact',
+  async (contact, thunkAPI) => {
+    // Add contact to an API or other source
+    const response = await fetch('/api/contacts', {
+      method: 'POST',
+      body: JSON.stringify(contact),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.json();
+  }
+);
+
+// Async thunk for deleting a contact
 export const deleteContact = createAsyncThunk(
-  'contacts/deleteContact',
-  async contactId => {
-    await axios.delete(`${BASE_URL}/${contactId}`);
+  'phonebook/deleteContact',
+  async (contactId, thunkAPI) => {
+    // Delete contact from an API or other source
+    await fetch(`/api/contacts/${contactId}`, {
+      method: 'DELETE',
+    });
     return contactId;
   }
 );
 
 const phonebookSlice = createSlice({
-  name: 'contacts',
+  name: 'phonebook',
   initialState: {
-    items: [],
-    isLoading: false,
-    error: null,
+    contacts: {
+      items: [],
+      isLoading: false,
+      error: null,
+    },
+    filter: '',
   },
-  reducers: {},
+  reducers: {
+    setFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+  },
+
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, state => {
-        state.isLoading = true;
+        state.contacts.isLoading = true;
+        state.contacts.error = null;
       })
       .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.items = action.payload;
+        state.contacts.isLoading = false;
+        state.contacts.items = action.payload;
       })
       .addCase(fetchContacts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+        state.contacts.isLoading = false;
+        state.contacts.error = action.error.message;
       })
       .addCase(addContact.pending, state => {
-        state.isLoading = true;
+        state.contacts.isLoading = true;
+        state.contacts.error = null;
       })
       .addCase(addContact.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.items.push(action.payload);
+        state.contacts.isLoading = false;
+        state.contacts.items.push(action.payload);
       })
       .addCase(addContact.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+        state.contacts.isLoading = false;
+        state.contacts.error = action.error.message;
       })
       .addCase(deleteContact.pending, state => {
-        state.isLoading = true;
+        state.contacts.isLoading = true;
+        state.contacts.error = null;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.items = state.items.filter(
+        state.contacts.isLoading = false;
+        state.contacts.items = state.contacts.items.filter(
           contact => contact.id !== action.payload
         );
       })
       .addCase(deleteContact.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
+        state.contacts.isLoading = false;
+        state.contacts.error = action.error.message;
       });
   },
 });
 
-export const { updateFilter } = phonebookSlice.actions;
+export const { setFilter } = phonebookSlice.actions;
+
 export default phonebookSlice.reducer;

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateFilter } from './PhonebookSlice';
+import { setFilter } from './PhonebookSlice';
 
 function Filter() {
-  const filter = useSelector(state => state.phonebook.filter);
+  const filter = useSelector(state => state.contacts.filter); // Make sure this path matches your state structure
   const dispatch = useDispatch();
 
   const handleFilterChange = event => {
-    dispatch(updateFilter(event.target.value));
+    dispatch(setFilter(event.target.value));
   };
 
   return (
