@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setFilter } from './PhonebookSlice';
 
 function Filter() {
-  const filter = useSelector(state => state.contacts.filter); // Make sure this path matches your state structure
+  const filter = useSelector(state => state.phonebook.filter); // Adjusted path to match your state structure
   const dispatch = useDispatch();
 
   const handleFilterChange = event => {

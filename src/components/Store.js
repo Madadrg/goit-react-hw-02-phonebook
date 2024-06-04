@@ -3,8 +3,7 @@ import phonebookReducer from './PhonebookSlice';
 
 const store = configureStore({
   reducer: {
-    contacts: phonebookReducer,
-    // Include other reducers if necessary
+    phonebook: phonebookReducer,
   },
 });
 

@@ -1,20 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Async thunk for fetching contacts
 export const fetchContacts = createAsyncThunk(
   'phonebook/fetchContacts',
   async (_, thunkAPI) => {
-    // Fetch contacts from an API or other source
     const response = await fetch('/api/contacts');
     return response.json();
   }
 );
 
-// Async thunk for adding a contact
 export const addContact = createAsyncThunk(
   'phonebook/addContact',
   async (contact, thunkAPI) => {
-    // Add contact to an API or other source
     const response = await fetch('/api/contacts', {
       method: 'POST',
       body: JSON.stringify(contact),
@@ -26,11 +22,9 @@ export const addContact = createAsyncThunk(
   }
 );
 
-// Async thunk for deleting a contact
 export const deleteContact = createAsyncThunk(
   'phonebook/deleteContact',
   async (contactId, thunkAPI) => {
-    // Delete contact from an API or other source
     await fetch(`/api/contacts/${contactId}`, {
       method: 'DELETE',
     });
@@ -53,7 +47,6 @@ const phonebookSlice = createSlice({
       state.filter = action.payload;
     },
   },
-
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, state => {

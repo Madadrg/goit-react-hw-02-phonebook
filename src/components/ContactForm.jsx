@@ -6,7 +6,7 @@ function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.contacts.isLoading);
+  const isLoading = useSelector(state => state.phonebook.contacts.isLoading);
 
   const handleSubmit = event => {
     event.preventDefault();
