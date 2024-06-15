@@ -1,35 +1,23 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchContacts, deleteContact } from './PhonebookSlice';
+import React from 'react';
+import { deleteContact } from './Api';
 
-function ContactList() {
-  const contacts = useSelector(state => state.phonebook.contacts.items);
-  const filter = useSelector(state => state.phonebook.filter);
-  const isLoading =
-    useSelector(state => state.phonebook?.contacts?.isLoading) ?? true;
-  const error = useSelector(state => state.phonebook.contacts.error);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Something went wrong. Please try again later</p>;
+function ContactList({ token, contacts, setContacts }) {
+  const handleDelete = async contactId => {
+    try {
+      await deleteContact(token, contactId);
+      setContacts(prev => prev.filter(contact => contact.id !== contactId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
       <ul>
-        {filteredContacts?.map(contact => (
+        {contacts.map(contact => (
           <li key={contact.id}>
-            {contact.name} {contact.phone} {/* Corrected property */}
-            <button onClick={() => dispatch(deleteContact(contact.id))}>
-              Delete
-            </button>
+            {contact.name} {contact.phone}
+            <button onClick={() => handleDelete(contact.id)}>Delete</button>
           </li>
         ))}
       </ul>

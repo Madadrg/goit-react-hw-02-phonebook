@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from './PhonebookSlice';
+import { addContact } from './Api';
 
-function ContactForm() {
+function ContactForm({ token, setContacts }) {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState(''); // Updated state variable
-  const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.phonebook.contacts.isLoading);
+  const [phone, setPhone] = useState('');
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    dispatch(addContact({ name, phone })); // Updated property name
-    setName('');
-    setPhone(''); // Updated state reset
+    try {
+      const response = await addContact(token, { name, phone });
+      setContacts(prev => [...prev, response.data]);
+      setName('');
+      setPhone('');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -21,14 +23,9 @@ function ContactForm() {
         Name: <input value={name} onChange={e => setName(e.target.value)} />
       </div>
       <div>
-        Phone: {/* Updated label */}
-        <input value={phone} onChange={e => setPhone(e.target.value)} />{' '}
-        {/* Updated state setter */}
+        Phone: <input value={phone} onChange={e => setPhone(e.target.value)} />
       </div>
-      <button type="submit" disabled={isLoading}>
-        Add Contact
-      </button>
-      {isLoading && <p>Loading...</p>}
+      <button type="submit">Add Contact</button>
     </form>
   );
 }
