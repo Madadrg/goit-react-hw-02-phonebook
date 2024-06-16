@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { register, login } from './Api';
 
-const Auth = ({ setToken }) => {
+const Auth = ({ setToken, isRegister = false }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isRegister, setIsRegister] = useState(true);
 
   const handleAuth = async event => {
     event.preventDefault();
@@ -36,9 +35,6 @@ const Auth = ({ setToken }) => {
         onChange={e => setPassword(e.target.value)}
       />
       <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
-      <button type="button" onClick={() => setIsRegister(!isRegister)}>
-        {isRegister ? 'Switch to Login' : 'Switch to Register'}
-      </button>
     </form>
   );
 };
