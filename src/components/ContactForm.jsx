@@ -1,5 +1,29 @@
 import React, { useState } from 'react';
 import { addContact } from './Api';
+import styled from 'styled-components';
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  margin: 0 auto;
+`;
+
+const Input = styled.input`
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 100%;
+`;
+
+const Button = styled.button`
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+`;
 
 function ContactForm({ token, setContacts }) {
   const [name, setName] = useState('');
@@ -18,15 +42,19 @@ function ContactForm({ token, setContacts }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        Name: <input value={name} onChange={e => setName(e.target.value)} />
-      </div>
-      <div>
-        Phone: <input value={phone} onChange={e => setPhone(e.target.value)} />
-      </div>
-      <button type="submit">Add Contact</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <Input
+        value={name}
+        onChange={e => setName(e.target.value)}
+        placeholder="Name"
+      />
+      <Input
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+        placeholder="Phone"
+      />
+      <Button type="submit">Add Contact</Button>
+    </Form>
   );
 }
 

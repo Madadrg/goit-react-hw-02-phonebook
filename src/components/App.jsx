@@ -10,22 +10,45 @@ import ContactList from './ContactList';
 import Filter from './Filter';
 import Auth from './Auth';
 import Navigation from './Navigation';
+import UserMenu from './UserMenu';
 import { fetchContacts } from './Api';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+`;
+
+const Title = styled.h1`
+  color: #333;
+`;
 
 function App() {
   const [token, setToken] = useState(null);
+  const [email, setEmail] = useState('');
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
     if (token) {
       fetchContacts(token).then(response => setContacts(response.data));
+      setEmail('user@example.com'); // Replace with actual logic to extract email from token
     }
   }, [token]);
 
+  const handleLogout = () => {
+    setToken(null);
+    setEmail('');
+    setContacts([]);
+  };
+
   return (
     <Router>
-      <div>
+      <Container>
         <Navigation />
+        {token && <UserMenu email={email} onLogout={handleLogout} />}
+        <Title>Phonebook</Title>
         <Routes>
           <Route
             path="/register"
@@ -53,7 +76,7 @@ function App() {
           />
           <Route path="/" element={<Navigate to="/contacts" />} />
         </Routes>
-      </div>
+      </Container>
     </Router>
   );
 }
