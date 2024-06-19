@@ -33,11 +33,11 @@ const Auth = ({ setToken, isRegister = false }) => {
     event.preventDefault();
     try {
       if (isRegister) {
-        await register(email, password);
+        const response = await register(email, password);
+        setToken(response.token); // Adjust based on actual response structure
       } else {
         const response = await login(email, password);
-        setToken(response.data.token);
-        setEmail(response.data.email); // Assuming the API returns the email
+        setToken(response.token); // Adjust based on actual response structure
       }
     } catch (error) {
       console.error(error);

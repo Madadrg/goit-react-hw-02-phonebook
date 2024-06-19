@@ -1,32 +1,46 @@
 import axios from 'axios';
 
-// Base URL of your ready-made backend
-const api = axios.create({
-  baseURL: 'https://your-backend-url.com', // Replace with your backend URL
-});
+const API_URL = 'https://connections-api.herokuapp.com';
 
-// User registration
-export const register = (email, password) =>
-  api.post('/register', { email, password });
-
-// User login
-export const login = (email, password) =>
-  api.post('/login', { email, password });
-
-// Fetch contacts
-export const fetchContacts = token =>
-  api.get('/contacts', {
-    headers: { Authorization: `Bearer ${token}` },
+export const register = async (email, password) => {
+  const response = await axios.post(`${API_URL}/users/signup`, {
+    email,
+    password,
   });
+  return response.data;
+};
 
-// Add contact
-export const addContact = (token, contact) =>
-  api.post('/contacts', contact, {
-    headers: { Authorization: `Bearer ${token}` },
+export const login = async (email, password) => {
+  const response = await axios.post(`${API_URL}/users/login`, {
+    email,
+    password,
   });
+  return response.data;
+};
 
-// Delete contact
-export const deleteContact = (token, contactId) =>
-  api.delete(`/contacts/${contactId}`, {
-    headers: { Authorization: `Bearer ${token}` },
+export const fetchContacts = async token => {
+  const response = await axios.get(`${API_URL}/contacts`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
+  return response.data;
+};
+
+export const addContact = async (token, contact) => {
+  const response = await axios.post(`${API_URL}/contacts`, contact, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const deleteContact = async (token, contactId) => {
+  const response = await axios.delete(`${API_URL}/contacts/${contactId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};

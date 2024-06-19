@@ -33,7 +33,7 @@ function ContactForm({ token, setContacts }) {
     event.preventDefault();
     try {
       const response = await addContact(token, { name, phone });
-      setContacts(prev => [...prev, response.data]);
+      setContacts(prev => [...prev, response]);
       setName('');
       setPhone('');
     } catch (error) {
