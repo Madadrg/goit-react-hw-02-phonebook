@@ -32,7 +32,7 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      fetchContacts(token).then(response => setContacts(response.data));
+      fetchContacts(token).then(response => setContacts(response));
       setEmail('user@example.com'); // Replace with actual logic to extract email from token
     }
   }, [token]);

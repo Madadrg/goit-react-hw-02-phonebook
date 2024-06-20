@@ -26,27 +26,40 @@ const Button = styled.button`
 `;
 
 const Auth = ({ setToken, isRegister = false }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleAuth = async event => {
     event.preventDefault();
     try {
+      console.log('Sending data:', { name, email, password });
       if (isRegister) {
-        const response = await register(email, password);
-        setToken(response.token); // Adjust based on actual response structure
+        await register(name, email, password);
       } else {
         const response = await login(email, password);
-        setToken(response.token); // Adjust based on actual response structure
+        setToken(response.data.token);
+        setEmail(response.data.email); // Assuming the API returns the email
       }
     } catch (error) {
-      console.error(error);
+      console.error(
+        'Authentication error:',
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   return (
     <Form onSubmit={handleAuth}>
       <h1>{isRegister ? 'Register' : 'Login'}</h1>
+      {isRegister && (
+        <Input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+      )}
       <Input
         type="email"
         placeholder="Email"
