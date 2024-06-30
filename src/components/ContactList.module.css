@@ -1,0 +1,53 @@
+.containerContacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemsContact {
+  list-style: square;
+  margin: 0;
+  padding: 0;
+}
+
+.itemContact {
+  display: flex;
+  align-items: center;
+  /* gap: 30px; */
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.titleContact {
+  margin: 0;
+}
+
+.containerBtnDel {
+  display: flex;
+  align-items: center;
+}
+
+.btnDelete {
+  margin-left: auto;
+  border: none;
+  padding: 8px;
+  background-color: hsl(0, 26%, 86%);
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.btnDelete:hover,
+.btnDelete:focus {
+  background-color: #e75656;
+  color: #fff;
+}
+.contactName {
+  font-weight: 700;
+}
+.wrapperContact {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

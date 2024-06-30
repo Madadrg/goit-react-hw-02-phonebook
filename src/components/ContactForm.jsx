@@ -1,60 +1,109 @@
 import React, { useState } from 'react';
-import { addContact } from './Api';
-import styled from 'styled-components';
+import styles from './ContactForm.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts } from '../redux/operations';
+import Notiflix from 'notiflix';
+import { selectContacts } from '../redux/selectors';
+import { nanoid } from 'nanoid';
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 300px;
-  margin: 0 auto;
-`;
+Notiflix.Notify.init({
+  width: '280px',
+  position: 'center-center',
+  distance: '10px',
+  opacity: 1,
+});
 
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 5px;
-  width: 100%;
-`;
+function ContactForm() {
+  const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({ name: '', number: '' });
 
-const Button = styled.button`
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-bottom: 10px;
-`;
+  const handleSubmit = e => {
+    e.preventDefault();
 
-function ContactForm({ token, setContacts }) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+    const newContact = {
+      id: nanoid(),
+      name: formData.name,
+      number: formData.number,
+    };
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    try {
-      const response = await addContact(token, { name, phone });
-      setContacts(prev => [...prev, response]);
-      setName('');
-      setPhone('');
-    } catch (error) {
-      console.error(error);
+    handleAddContacts(newContact);
+
+    setFormData({ name: '', number: '' });
+  };
+
+  const handleInputChange = e => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleAddContacts = newContact => {
+    const existingContactByName = contacts.find(
+      contact => contact.name === newContact.name
+    );
+    const existingContactByNumber = contacts.find(
+      contact => contact.number === newContact.number
+    );
+
+    if (existingContactByName) {
+      Notiflix.Notify.failure(`${newContact.name} is already in contacts!`);
+    } else if (existingContactByNumber) {
+      Notiflix.Notify.failure(
+        `Number ${newContact.number} is already in contacts!`
+      );
+    } else {
+      dispatch(
+        addContacts({ name: newContact.name, number: newContact.number })
+      );
     }
   };
 
+  const { name, number } = formData;
+  const isFormValid = name.trim() !== '' && number.trim() !== '';
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <Input
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Name"
-      />
-      <Input
-        value={phone}
-        onChange={e => setPhone(e.target.value)}
-        placeholder="Phone"
-      />
-      <Button type="submit">Add Contact</Button>
-    </Form>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <label className={styles.labelName}>
+        {' '}
+        Name:
+        <input
+          className={styles.formInput}
+          type="text"
+          name="name"
+          value={name}
+          onChange={handleInputChange}
+          placeholder="Name"
+          pattern="^[a-zA-Z]+(([' \-][a-zA-Z ])?[a-zA-Z]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+        />
+      </label>
+      <label className={styles.labelPhone}>
+        {' '}
+        Number:
+        <input
+          className={styles.formInput}
+          type="tel"
+          name="number"
+          value={number}
+          onChange={handleInputChange}
+          placeholder="Phone number"
+          pattern="\+?\d{1,4}?[[\-.\s]]?\(?\d{1,3}?\)?[[\-.\s]]?\d{1,4}[[\-.\s]]?\d{1,4}[[\-.\s]]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+        />
+      </label>
+      <button
+        type="submit"
+        className={styles.btnSubmit}
+        disabled={!isFormValid}
+      >
+        Add contact
+      </button>
+    </form>
   );
 }
 
